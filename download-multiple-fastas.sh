@@ -26,8 +26,13 @@ while IFS=$'\n' read -r id; do
 done < ${list}
 
 for acn in "${id[@]}"; do 
+
   curl "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&amp;id=${acn}&amp;rettype=fasta" \
   > ${acn}.fasta
+
+  #NCBI API rate limit is 3 requests per second w/out a key
+  sleep 0.2s
+
 done
 
 ###############################################################################
